@@ -1,36 +1,72 @@
 ﻿using System;
-using poo2;
+using System.Collections.Generic;
 
 namespace poo2
 {
     public class Program
     {
+        // Colecciones accesibles en toda la clase
+        static List<Persona> personas = new List<Persona>();
+        static Queue<Persona> colaAtencion = new Queue<Persona>();
+        static Stack<Persona> historialAtendidos = new Stack<Persona>();
+
         static void Main(string[] args)
         {
-            //Persona persona1 = new Persona();
-            //Console.WriteLine(persona1.GetNombre());
+            bool salir = false;
+            while (!salir)
+            {
+                Console.WriteLine("\n --- MENÚ DEL ESTUDIANTE ---");
+                Console.WriteLine("1. Agregar un estudiante");
+                Console.WriteLine("2. Listar los estudiantes actuales");
+                Console.WriteLine("3. Buscar estudiante por cédula");
+                Console.WriteLine("4. Filtrar estudiante por edad (LINQ)");
+                Console.WriteLine("5. Atender estudiante (Queue)");
+                Console.WriteLine("6. Registrar estudiante atendido (Stack)");
+                Console.WriteLine("7. Salir");
+                Console.Write("Ingrese una opción: ");
+                string opcion = Console.ReadLine();
 
-            //persona1.SetNombre("Maria");
-            //string nombrePersona1 = persona1.GetNombre();
-            //persona1.Edad = 23;
-            //Console.WriteLine("Modificando atributo Nombre...");
-            //Console.WriteLine(persona1.GetNombre());
-            //Console.WriteLine($"La Persona1 se llama {nombrePersona1}, y tiene {persona1.Edad} anios");
+                switch (opcion)
+                {
+                    case "1": AgregarEstudiante(); break;
+                    //case "2": ListarEstudiantes(); break;
+                    //case "3": BuscarPorCedula(); break;
+                    //case "4": FiltrarPorEdad(); break;
+                    //case "5": AtenderEstudiante(); break;
+                    //case "6": RegistrarAtendido(); break;
+                    case "7": salir = true; break;
+                    default: Console.WriteLine("Opción no válida. Intente de nuevo."); break;
+                }
+            }
+        }
 
-            //Persona persona2 = new Persona();
-            //persona2.SetNombre("Jose");
-            //string nombrePersona2 = persona2.GetNombre();
-            //persona2.Edad = 30;
+        // Agregar estudiante
+        public static void AgregarEstudiante()
+        {
+            Console.Write("¿Es un estudiante becado? (s/n): ");
+            string esBecado = Console.ReadLine().ToLower();
+            Console.Write("Ingrese el nombre del estudiante: ");
+            string nombre = Console.ReadLine();
+            Console.Write("Ingrese la edad del estudiante: ");
+            int edad = int.Parse(Console.ReadLine());
+            Console.Write("Ingrese la carrera del estudiante: ");
+            string carrera = Console.ReadLine();
 
-            //Console.WriteLine($"La Persona2 se llama {persona2.GetNombre()}, y tiene {persona2.Edad} anios");
+            Persona nuevo;
+            if (esBecado == "s")
+            {
+                Console.Write("Ingrese el tipo de beca: ");
+                string tipoBeca = Console.ReadLine();
+                nuevo = new EstudianteBecado(nombre, edad, carrera, tipoBeca);
+            }
+            else
+            {
+                nuevo = new Estudiante(nombre, edad, carrera);
+            }
 
-            //Persona persona3 = new Persona("Ana", 21);
-            //Console.WriteLine($"La Persona3 se llama {persona3.GetNombre()}, y tiene {persona3.Edad} anios");
-
-            Estudiante estudiante1 = new Estudiante("Jeffry", 35, "Ingenieria Informatica");
-            EstudianteBecado estudiante2 = new EstudianteBecado("Luis", 23, "Derecho", "Académica");
-            estudiante1.MostrarInfo();
-            estudiante2.MostrarInfo();
+            personas.Add(nuevo);
+            colaAtencion.Enqueue(nuevo);
+            Console.WriteLine("Estudiante agregado correctamente.");
         }
     }
 }
